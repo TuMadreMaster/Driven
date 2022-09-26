@@ -1,0 +1,70 @@
+# Column definitions
+
+time_col: time
+time_col: time
+delta_col: time_delta
+prod_col: nombre_receta
+rate_col: kit_rate
+chunk_col: chunk_id
+counter_col: contador_kits_turno
+
+categorical_cols:
+  - nombre_pieza_vibrador_1
+  - nombre_pieza_vibrador_2
+  - nombre_pieza_vibrador_3
+  - nombre_pieza_vibrador_4
+  - nombre_pieza_vibrador_5
+  - nombre_pieza_vibrador_6
+  - nombre_pieza_vibrador_7
+  - nombre_pieza_vibrador_8
+  - nombre_pieza_vibrador_9
+
+numeric_cols:
+  - cajas_fabricadas
+  - contador_cajas_fila
+  - preseleccion_cajas
+  - contador_kits_turno
+  - numero_piezas_vibrador_1
+  - numero_piezas_vibrador_2
+  - numero_piezas_vibrador_3
+  - numero_piezas_vibrador_4
+  - numero_piezas_vibrador_5
+  - numero_piezas_vibrador_6
+  - numero_piezas_vibrador_7
+  - numero_piezas_vibrador_8
+  - numero_piezas_vibrador_9
+
+antropic_cols:
+  - seta_emergencia_mod1
+  - seta_emergencia_mod2
+  - seta_emergencia_mod3
+  - puerta_1
+  - puerta_2
+  - baliza_verde_mod3
+  - baliza1_verde_mod1
+  - baliza2_verde_mod1
+  - baliza_amari_mod3
+  - baliza1_amari_mod1
+  - baliza2_amari_mod1
+  - baliza_rojo_mod3
+  - baliza1_rojo_mod1
+  - baliza2_rojo_mod1
+  - barrera_seguridad_1
+  - barrera_seguridad_2
+  - marcha_auto
+  - alarma_general
+  - alarma_en_estacion_e1
+  - alarma_en_estacion_e4
+  - alarma_en_estacion_e7
+  - alarma_en_estacion_e8
+  - alarma_en_estacion_e9
+  - alarma_en_estacion_e13
+  - alarma_en_estacion_e14
+  - alarma_en_estacion_e15
+  - alarma_en_estacion_e16
+  - alarma_ausencia_caja_estacion_15
+  - alarma_ausencia_caja_estacion_16
+  - alarma_error_impresora
+  - alarma_det_cil_impresora_arriba
+  - alarma_barrera1_seguridad_mod_1_nok_cambio_casette
+  - alarma_barrera2_seguridad_mod_1_nok_cambio_casette

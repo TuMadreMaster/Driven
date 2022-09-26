@@ -1,0 +1,87 @@
+# Creamos un docker compose para hacer pruebas sobre control de versiones de node-red
+version: "3.9"
+
+# El apartado networks permite crear una subred donde alojamos ip fijas a nuestros microservicios
+networks:
+    dns_net:
+        driver: bridge
+        name: docker_network_driven
+        ipam:
+            driver: default
+            config:
+                - subnet: 100.10.10.0/24
+                  gateway: 100.10.10.1
+services:
+    node-red:
+        image: nodered/node-red
+        container_name: dev_nodered
+        #restart: always
+        ports:
+            - 1800:1880 # Especificamos que el puerto 1880 del docker se comunica con el host en el puerto 1800
+        environment:
+            - TZ=Europe/Madrid
+        networks:
+            dns_net:
+                ipv4_address: 100.10.10.2
+        volumes:
+            - ./nodered:/data #Especificamos que todos los datos de node-red que estaran en la carpeta /data aparezcan en la ruta especificada
+        command: sh -c "npm i && nom run server"
+    
+    python:
+        build:
+            context: ./python
+            dockerfile: Dockerfile
+        command: uvicorn app.main:app --host 0.0.0.0
+        container_name: dev_logic
+        #restart: always
+        depends_on: 
+            - timescale
+        volumes:
+            - ./python/models/:/code/app/models
+        ports:
+            - 8008:8000
+        networks:
+            dns_net:
+                ipv4_address: 100.10.10.3
+
+    timescale:
+        image: timescale/timescaledb:latest-pg14
+        container_name: dev_timescale
+        restart: always
+        ports:
+          - 5030:5432
+        networks:
+            dns_net:
+                ipv4_address: 100.10.10.4
+        volumes:
+          - ./database/data:/var/lib/postgresql/data
+          - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql # copy the sql script to create tables
+        environment:
+          - POSTGRES_USER=lis
+          - POSTGRES_PASSWORD=Lis2568djcxdnsan45n4nrnenf
+          - POSTGRES_DB=seinsa
+          - TZ=UTC
+
+    grafana:
+        user: "0:0"
+        container_name: dev_grafana
+        depends_on: 
+            - timescale # El comando depends_on permite que primero se inicialice la BBDD de influxdb y luego se inicialice grafana
+        image: grafana/grafana
+        #restart: always
+        ports: 
+            - 5000:3000
+        volumes:
+            - ./grafana/data:/var/lib/grafana
+            - ./grafana/logs:/var/log/grafana
+            - ./grafana/plugins:/var/lib/grafana/plugins
+            - ./grafana/provisioning:/etc/grafana/provisioning
+
+        networks:
+            dns_net:
+                ipv4_address: 100.10.10.5
+
+volumes:
+  timescale:
+  node-red:
+  grafana:
